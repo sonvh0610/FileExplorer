@@ -146,18 +146,22 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="1412469.h" />
+    <ClInclude Include="Drive.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TreeView.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="1412469.cpp" />
+    <ClCompile Include="Drive.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TreeView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="1412469.rc" />

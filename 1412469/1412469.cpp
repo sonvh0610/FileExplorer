@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "1412469.h"
+#include <windowsx.h>
 
 #define MAX_LOADSTRING 100
 
@@ -45,7 +46,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     // Main message loop:
     while (GetMessage(&msg, nullptr, 0, 0))
     {
-        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+        if (!TranslateAccelerator(g_hWnd, hAccelTable, &msg))
         {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
@@ -95,20 +96,20 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-   hInst = hInstance; // Store instance handle in our global variable
+	g_hInst = hInstance;
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+	g_hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
       CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
-   if (!hWnd)
-   {
-      return FALSE;
-   }
+	if (!g_hWnd)
+	{
+		return FALSE;
+	}
 
-   ShowWindow(hWnd, nCmdShow);
-   UpdateWindow(hWnd);
+	ShowWindow(g_hWnd, nCmdShow);
+	UpdateWindow(g_hWnd);
 
-   return TRUE;
+	return TRUE;
 }
 
 //
@@ -125,56 +126,36 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
-    case WM_COMMAND:
-        {
-            int wmId = LOWORD(wParam);
-            // Parse the menu selections:
-            switch (wmId)
-            {
-            case IDM_ABOUT:
-                DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-                break;
-            case IDM_EXIT:
-                DestroyWindow(hWnd);
-                break;
-            default:
-                return DefWindowProc(hWnd, message, wParam, lParam);
-            }
-        }
-        break;
-    case WM_PAINT:
-        {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: Add any drawing code that uses hdc here...
-            EndPaint(hWnd, &ps);
-        }
-        break;
-    case WM_DESTROY:
-        PostQuitMessage(0);
-        break;
+		HANDLE_MSG(hWnd, WM_CREATE, OnCreate);
+		HANDLE_MSG(hWnd, WM_COMMAND, OnCommand);
+		HANDLE_MSG(hWnd, WM_DESTROY, OnDestroy);
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
     return 0;
 }
 
-// Message handler for about box.
-INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+void OnDestroy(HWND hwnd)
 {
-    UNREFERENCED_PARAMETER(lParam);
-    switch (message)
-    {
-    case WM_INITDIALOG:
-        return (INT_PTR)TRUE;
+	PostQuitMessage(0);
+}
 
-    case WM_COMMAND:
-        if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
-        {
-            EndDialog(hDlg, LOWORD(wParam));
-            return (INT_PTR)TRUE;
-        }
-        break;
-    }
-    return (INT_PTR)FALSE;
+BOOL OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct)
+{
+	RECT main;
+	GetWindowRect(hwnd, &main);
+
+	g_Drive = new Drive();
+	g_Drive->GetSystemDrives();
+
+	g_TreeView = new TreeView();
+	g_TreeView->Create(hwnd, IDC_TREEVIEW, g_hInst, main.right / 3, main.bottom);
+	g_TreeView->LoadMyComputer(g_Drive);
+	g_TreeView->GetFocus();
+
+	return TRUE;
+}
+
+void OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
+{
 }

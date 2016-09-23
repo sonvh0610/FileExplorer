@@ -30,12 +30,24 @@
     <ClInclude Include="1412469.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TreeView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Drive.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="1412469.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TreeView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Drive.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
