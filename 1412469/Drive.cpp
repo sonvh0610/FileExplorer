@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Drive.h"
+#include "Converter.h"
 
+#include <shellapi.h>
 #include <shlwapi.h>
 #pragma comment(lib, "shlwapi.lib")
 
@@ -97,3 +99,46 @@ WCHAR* Drive::GetDriveName(const int i) { return this->mDrive.at(i); }
 WCHAR* Drive::GetVolName(const int i) { return this->mVolName.at(i); }
 WCHAR* Drive::GetDisplayName(const int i) { return this->mDisplayName.at(i); }
 int Drive::GetIconIndex(const int i) { return this->mIconIndex.at(i); }
+
+LPWSTR Drive::GetType(const int i)
+{
+	switch (this->GetIconIndex(i))
+	{
+	case IDI_FLOPPY:
+		return _T("3½ Floppy");
+		break;
+	case IDI_CD:
+		return _T("CD Rom");
+		break;
+	case IDI_HDD:
+		return _T("Local Disk");
+		break;
+	default:
+		return _T("Removable Disk");
+		break;
+	}
+}
+
+__int64 Drive::GetSize(const int i)
+{
+	__int64 iSize;
+	SHGetDiskFreeSpaceEx(this->GetDriveName(i), NULL, (PULARGE_INTEGER)&iSize, NULL);
+	return iSize;
+}
+
+LPWSTR Drive::GetSizeStr(const int i)
+{
+	return Converter::Convert(this->GetSize(i));
+}
+
+__int64 Drive::GetFreeSize(const int i)
+{
+	__int64 iFreeSize;
+	GetDiskFreeSpaceEx(this->GetDriveName(i), NULL, NULL, (PULARGE_INTEGER)&iFreeSize);
+	return iFreeSize;
+}
+
+LPWSTR Drive::GetFreeSizeStr(const int i)
+{
+	return Converter::Convert(this->GetFreeSize(i));
+}

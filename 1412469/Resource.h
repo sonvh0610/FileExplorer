@@ -16,6 +16,14 @@
 #define IDC_MYICON				2
 
 #define IDC_TREEVIEW            102
+#define IDC_LISTVIEW            103
+
+
+#define IDC_ADDRESS             120
+#define IDC_ADDRESS_STATIC      121
+#define IDC_ADDRESS_EDIT        122
+#define IDC_ADDRESS_GO          123
+
 #ifndef IDC_STATIC
 #define IDC_STATIC				-1
 #endif

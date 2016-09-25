@@ -20,5 +20,11 @@ public:
 	WCHAR* GetVolName(const int i);
 	WCHAR* GetDisplayName(const int i);
 	int GetIconIndex(const int i);
+
+	LPWSTR GetType(const int i);
+	__int64 GetSize(const int i);
+	LPWSTR GetSizeStr(const int i);
+	__int64 GetFreeSize(const int i);
+	LPWSTR GetFreeSizeStr(const int i);
 };
 

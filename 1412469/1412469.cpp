@@ -129,6 +129,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		HANDLE_MSG(hWnd, WM_CREATE, OnCreate);
 		HANDLE_MSG(hWnd, WM_COMMAND, OnCommand);
 		HANDLE_MSG(hWnd, WM_DESTROY, OnDestroy);
+		HANDLE_MSG(hWnd, WM_NOTIFY, OnNotify);
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
@@ -153,9 +154,26 @@ BOOL OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct)
 	g_TreeView->LoadMyComputer(g_Drive);
 	g_TreeView->GetFocus();
 
+	g_ListView = new ListView();
+	g_ListView->Create(hwnd, IDC_LISTVIEW, g_hInst, (main.right - main.left) * 2 / 3 + 1, main.bottom, main.right / 3);
+	g_ListView->LoadMyComputer(g_Drive);
+
 	return TRUE;
 }
 
 void OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 {
+}
+
+LRESULT OnNotify(HWND hwnd, int idFrom, NMHDR* pnm)
+{
+	switch (pnm->code)
+	{
+	case NM_DBLCLK:
+		if (pnm->hwndFrom == g_ListView->GetHandle())
+			g_ListView->LoadCurrentSelection();
+		break;
+	}
+
+	return 0;
 }
